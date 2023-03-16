@@ -3,17 +3,28 @@
 const $body = $(`body`);
 const $container = $(".container");
 const $modal = $(".modal");
-var currentPage = 1;
+const $search = $("#search");
+const $searchText = $("#searchText");
 
 $(document).ready(function () {
   $.get(`https://rickandmortyapi.com/api/character`, (data) => {
-    //console.log(data);
-    //console.log(data.info.next);
-    //console.log(data.info.pages);
     createCharTiles(data.results);
-    //create pagination buttons
     createPaging(data.info);
   });
+});
+
+$search.on("click", function () {
+  var charName = $("#searchText").val();
+  $.get(
+    `https://rickandmortyapi.com/api/character/?name=${charName}`,
+    (data) => {
+      //console.log(data);
+      $container.empty();
+      createCharTiles(data.results);
+      createPaging(data.info);
+    }
+  );
+  //console.log(charName);
 });
 
 function createCharTiles(data) {
@@ -24,7 +35,9 @@ function createCharTiles(data) {
   //console.log(data[x]);
   data.forEach((result) => {
     //console.log(x);
-    let $column = $(`<div class="column notification is-info is-3" ></div>`);
+    let $column = $(
+      `<div class="column notification is-info is-3" margin ></div>`
+    );
     let $figure = $(`<figure class="image is-128x128"</figure>`);
     let $img = $(`<img class="is-rounded" src=${result.image}></img>`);
     let $name = $(`<div></div>`);
@@ -53,7 +66,7 @@ function getCharDetails(id) {
   );
 
   $.get(`https://rickandmortyapi.com/api/character/${id}`, (data) => {
-    console.log(data);
+    //console.log(data);
     //$w.append(createCharCard(data));
     $modalContent.append(createCharCard(data));
     $modalBG.append($modalContent);
@@ -62,16 +75,11 @@ function getCharDetails(id) {
     $modal.on("click", function () {
       $modal.removeClass("is-active");
     });
-    //charInfo = data;
-    //console.log(data.info.next);
-    //createCharTiles(data.results);
   });
-
-  //   $w.html(`<div></div>`);
 }
 
 function createCharCard(data) {
-  let $card = $(`<div></div`);
+  let $card = $(`<div ></div`);
   let $img = $(`<img src=${data.image}></img>`);
   let $name = $(`<div></div>`);
   let $status = $(`<div></div>`);
@@ -104,7 +112,7 @@ function createPaging(data) {
   let $nav = $(
     `<nav class="pagination" role="navigation" aria-label="pagination"></nav>`
   );
-  console.log(data);
+  //console.log(data);
   let $prev = $(
     `<a class="pagination-link" aria-label="Previous">Previous</a>`
   );
@@ -127,19 +135,7 @@ function createPaging(data) {
   }
   $nav.append($prev);
   $nav.append($next);
-  // for (let x = 1; x < 43; x++) {
-  //   let $a = $(
-  //     `<a class="pagination-link" aria-label="Goto page ${x}">${x}</a>`
-  //   );
-  //   //let $button = $(`<button>${x}</button>`);
-  //   $a.on("click", function () {
-  //     let url = `https://rickandmortyapi.com/api/character?page=${x}`;
-  //     //console.log(url);
-  //     //alert("Clicked on button " + x);
-  //     newPage(url);
-  //   });
-  //   $nav.append($a);
-  // }
+
   $container.append($nav);
 }
 
@@ -168,12 +164,6 @@ function getEpisodeInfo(episode) {
 
       console.log(data.episode.length);
       $episodeInfo.append(data.episode + " " + data.name);
-
-      //$episodeInfo.append(" Name: " + data.name);
-      //$w.append(createCharCard(data));
-      //charInfo = data;
-      //console.log(data.info.next);
-      //createCharTiles(data.results);
     });
   } else {
     for (let x = 0; x < episode.length; x++) {
