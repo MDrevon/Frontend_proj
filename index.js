@@ -46,18 +46,11 @@ function createCharTiles(data) {
 
 //Open up new window with info
 function getCharDetails(id) {
-  //console.log(username);
-  //let $modal = $(".modal");
   $modal.empty();
-  let $modalBG = $(`<div class="modal-background"></div>`);
-  let $modalContent = $(`<div class="modal-content"></div>`);
-  //   let w = window.open(
-  //     "",
-  //     "popupWindow",
-  //     "width=600, height=400, scrollbars=yes"
-  //   );
-  //   var $w = $(w.document.body);
-  //   var charInfo;
+  let $modalBG = $(`<div class="modal-background "></div>`);
+  let $modalContent = $(
+    `<div class="modal-content has-background-white"></div>`
+  );
 
   $.get(`https://rickandmortyapi.com/api/character/${id}`, (data) => {
     console.log(data);
