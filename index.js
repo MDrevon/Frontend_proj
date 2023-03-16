@@ -4,7 +4,6 @@ const $body = $(`body`);
 const $container = $(".container");
 const $modal = $(".modal");
 const $search = $("#search");
-const $searchText = $("#searchText");
 
 $(document).ready(function () {
   $.get(`https://rickandmortyapi.com/api/character`, (data) => {
@@ -19,6 +18,7 @@ $search.on("click", function () {
     `https://rickandmortyapi.com/api/character/?name=${charName}`,
     (data) => {
       //console.log(data);
+      $("#searchText").val("");
       $container.empty();
       createCharTiles(data.results);
       createPaging(data.info);
