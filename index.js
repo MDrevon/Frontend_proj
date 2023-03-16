@@ -21,7 +21,7 @@ function createCharTiles(data) {
   var $tile = $(
     `<div class="columns notification is-primary is-multiline" ></div>`
   );
-  console.log(data[x]);
+  //console.log(data[x]);
   data.forEach((result) => {
     //console.log(x);
     let $column = $(`<div class="column notification is-info is-3" ></div>`);
@@ -104,19 +104,42 @@ function createPaging(data) {
   let $nav = $(
     `<nav class="pagination" role="navigation" aria-label="pagination"></nav>`
   );
-  for (let x = 1; x < 43; x++) {
-    let $a = $(
-      `<a class="pagination-link" aria-label="Goto page ${x}">${x}</a>`
-    );
-    //let $button = $(`<button>${x}</button>`);
-    $a.on("click", function () {
-      let url = `https://rickandmortyapi.com/api/character?page=${x}`;
-      //console.log(url);
-      //alert("Clicked on button " + x);
+  console.log(data);
+  let $prev = $(
+    `<a class="pagination-link" aria-label="Previous">Previous</a>`
+  );
+  if (data.prev === null) {
+    $prev.addClass("is-disabled");
+  } else {
+    $prev.on("click", function () {
+      let url = data.prev;
       newPage(url);
     });
-    $nav.append($a);
   }
+  let $next = $(`<a class="pagination-link" aria-label="Next">Next</a>`);
+  if (data.next === null) {
+    $next.addClass("is-disabled");
+  } else {
+    $next.on("click", function () {
+      let url = data.next;
+      newPage(url);
+    });
+  }
+  $nav.append($prev);
+  $nav.append($next);
+  // for (let x = 1; x < 43; x++) {
+  //   let $a = $(
+  //     `<a class="pagination-link" aria-label="Goto page ${x}">${x}</a>`
+  //   );
+  //   //let $button = $(`<button>${x}</button>`);
+  //   $a.on("click", function () {
+  //     let url = `https://rickandmortyapi.com/api/character?page=${x}`;
+  //     //console.log(url);
+  //     //alert("Clicked on button " + x);
+  //     newPage(url);
+  //   });
+  //   $nav.append($a);
+  // }
   $container.append($nav);
 }
 
