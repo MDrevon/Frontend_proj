@@ -155,6 +155,7 @@ function newPage(url) {
 function getEpisodeInfo(episode) {
   console.log(episode);
   let $episodeInfo = $(`<div></div`);
+  let $table = $(`<table class="table is-bordered"></table>`);
   //console.log(episode.episode);
   console.log(episode.length);
 
@@ -163,17 +164,27 @@ function getEpisodeInfo(episode) {
       console.log(data);
 
       console.log(data.episode.length);
-      $episodeInfo.append(data.episode + " " + data.name);
+      let $tr = $(`<tr></tr>`);
+      let $td = $(`<td></td>`);
+      $td.append(data.episode + " " + data.name);
+      $tr.append($td);
+      $table.append($tr);
+      //$episodeInfo.append(data.episode + " " + data.name);
     });
   } else {
     for (let x = 0; x < episode.length; x++) {
-      console.log("Episode");
-      console.log(episode[x]);
+      //console.log("Episode");
+      //console.log(episode[x]);
       $.get(episode[x], (data) => {
         console.log(data);
+        let $tr = $(`<tr></tr>`);
+        let $td = $(`<td></td>`);
+        $td.append(data.episode + " " + data.name);
+        $tr.append($td);
+        $table.append($tr);
 
         //console.log(data.episode.length);
-        $episodeInfo.append(data.episode + " " + data.name + "\n");
+        //$episodeInfo.append(data.episode + " " + data.name + "\n");
 
         //$episodeInfo.append(" Name: " + data.name);
         //$w.append(createCharCard(data));
@@ -183,6 +194,7 @@ function getEpisodeInfo(episode) {
       });
     }
   }
+  $episodeInfo.append($table);
 
   return $episodeInfo;
 }
