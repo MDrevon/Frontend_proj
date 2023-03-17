@@ -4,12 +4,31 @@ const $body = $(`body`);
 const $container = $(".container");
 const $modal = $(".modal");
 const $search = $("#search");
+const $searchText = $("#searchText");
 
 $(document).ready(function () {
   $.get(`https://rickandmortyapi.com/api/character`, (data) => {
     createCharTiles(data.results);
     createPaging(data.info);
   });
+});
+
+$searchText.keypress(function (event) {
+  var keycode = event.keyCode ? event.keyCode : event.which;
+  //var search = $("#search").val();
+  if (keycode == "13") {
+    var charName = $("#searchText").val();
+    $.get(
+      `https://rickandmortyapi.com/api/character/?name=${charName}`,
+      (data) => {
+        //console.log(data);
+        $("#searchText").val("");
+        $container.empty();
+        createCharTiles(data.results);
+        createPaging(data.info);
+      }
+    );
+  }
 });
 
 $search.on("click", function () {
